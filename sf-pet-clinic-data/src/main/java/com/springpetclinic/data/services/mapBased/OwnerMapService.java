@@ -1,28 +1,14 @@
 package com.springpetclinic.data.services.mapBased;
 
 import com.springpetclinic.data.model.Owner;
-import java.util.Set;
+import com.springpetclinic.data.services.OwnerService;
+import org.springframework.stereotype.Service;
 
-public class OwnerMapService extends AbstractMapService<Owner, Long> {
+@Service
+public class OwnerMapService extends AbstractMapService<Owner, Long> implements OwnerService {
 
-    public Owner save(Owner owner) {
-        return super.save(owner);
-    }
-
-    public Set<Owner> findAll() {
-        return super.findAll();
-    }
-
-    public Owner findById(Long id) {
-        return super.findById(id);
-    }
-
-    public void delete(Owner owner) {
-        super.delete(owner);
-    }
-
-    public void deleteById(Long id) {
-        super.deleteById(id);
+    public Owner findByLastName(String lastName) {
+        return null;
     }
 
 }

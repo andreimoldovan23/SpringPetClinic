@@ -6,10 +6,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
-public abstract class AbstractMapService<T, ID> implements CrudService<T, ID> {
+@SuppressWarnings("FieldMayBeFinal")
+public abstract class AbstractMapService<T extends Entity, ID extends Long> implements CrudService<T, ID> {
 
     protected Map<ID, T> map = new HashMap<>();
+    private AtomicLong id = new AtomicLong(0);
 
     public T findById(ID id) {
         return map.get(id);
@@ -21,7 +24,11 @@ public abstract class AbstractMapService<T, ID> implements CrudService<T, ID> {
 
     @SuppressWarnings("unchecked")
     public T save(T type) {
-        map.put((ID) ((Entity)type).getId(), type);
+        if(type.getId() == null) {
+            Long typeId = id.incrementAndGet();
+            type.setId(typeId);
+        }
+        map.put((ID) type.getId(), type);
         return type;
     }
 
