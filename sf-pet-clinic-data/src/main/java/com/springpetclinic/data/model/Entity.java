@@ -1,6 +1,8 @@
 package com.springpetclinic.data.model;
 
-public class Entity {
+import java.io.Serializable;
+
+public class Entity implements Serializable {
 
     private Long id;
 
