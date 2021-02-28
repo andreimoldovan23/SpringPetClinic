@@ -32,4 +32,8 @@ public class Visit extends Entity {
         this.pet = pet;
     }
 
+    public String toString() {
+        return "Visit: " + getId() + ", " + description + " " + pet + "\n";
+    }
+
 }

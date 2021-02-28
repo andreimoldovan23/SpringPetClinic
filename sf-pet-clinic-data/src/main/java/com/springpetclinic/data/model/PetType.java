@@ -12,4 +12,8 @@ public class PetType extends Entity{
         this.name = name;
     }
 
+    public String toString() {
+        return getId() + ", " + name;
+    }
+
 }

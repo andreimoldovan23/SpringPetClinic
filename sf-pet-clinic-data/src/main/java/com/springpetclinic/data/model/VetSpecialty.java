@@ -12,4 +12,8 @@ public class VetSpecialty extends Entity {
         this.specialtyName = specialtyName;
     }
 
+    public String toString() {
+        return "{ " + getId() + ", " + specialtyName + " }";
+    }
+
 }

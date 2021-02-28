@@ -1,6 +1,6 @@
 package com.springpetclinic.data.model;
 
-public class Person extends Entity{
+public abstract class Person extends Entity{
 
     private String firstName;
     private String lastName;
