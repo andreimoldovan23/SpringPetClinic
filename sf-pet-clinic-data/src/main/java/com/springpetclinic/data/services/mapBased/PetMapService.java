@@ -5,9 +5,11 @@ import com.springpetclinic.data.model.Pet;
 import com.springpetclinic.data.model.PetType;
 import com.springpetclinic.data.services.PetService;
 import com.springpetclinic.data.services.PetTypeService;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
+@Profile({"default", "map"})
 public class PetMapService extends AbstractMapService<Pet, Long> implements PetService {
 
     private final PetTypeService petTypeService;

@@ -1,9 +1,14 @@
 package com.springpetclinic.data.model;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
-public abstract class Entity implements Serializable {
+@MappedSuperclass
+public abstract class BaseEntity implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     public Long getId() {

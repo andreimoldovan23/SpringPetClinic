@@ -2,7 +2,7 @@ package com.springpetclinic.data.services.mapBased;
 
 import com.springpetclinic.data.exceptions.MyException;
 import com.springpetclinic.data.exceptions.NullObject;
-import com.springpetclinic.data.model.Entity;
+import com.springpetclinic.data.model.BaseEntity;
 import com.springpetclinic.data.services.CrudService;
 import java.util.HashSet;
 import java.util.Map;
@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 @SuppressWarnings("FieldMayBeFinal")
-public abstract class AbstractMapService<T extends Entity, ID extends Long> implements CrudService<T, ID> {
+public abstract class AbstractMapService<T extends BaseEntity, ID extends Long> implements CrudService<T, ID> {
 
     protected Map<ID, T> map = new ConcurrentHashMap<>();
     protected AtomicLong id = new AtomicLong(0);

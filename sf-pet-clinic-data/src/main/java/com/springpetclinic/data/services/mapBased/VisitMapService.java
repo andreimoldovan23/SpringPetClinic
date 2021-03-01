@@ -7,9 +7,11 @@ import com.springpetclinic.data.model.Pet;
 import com.springpetclinic.data.model.Visit;
 import com.springpetclinic.data.services.PetService;
 import com.springpetclinic.data.services.VisitService;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
+@Profile({"default", "map"})
 public class VisitMapService extends AbstractMapService<Visit, Long> implements VisitService {
 
     private final PetService petService;
@@ -28,8 +30,10 @@ public class VisitMapService extends AbstractMapService<Visit, Long> implements 
         if(pet == null)
             throw new VisitWithoutPet();
 
-        if(pet.getId() == null)
+        pet.getVisits().add(visit);
+        if(pet.getId() == null) {
             petService.save(pet);
+        }
 
         if(visit.getId() == null) {
             Long id = super.id.incrementAndGet();

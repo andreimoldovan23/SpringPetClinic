@@ -1,8 +1,17 @@
 package com.springpetclinic.data.model;
 
-public class Address extends Entity {
+import javax.persistence.Column;
+import javax.persistence.Table;
+import javax.persistence.Entity;
 
+@Entity
+@Table(name = "Addresses")
+public class Address extends BaseEntity {
+
+    @Column(name = "city")
     private String city;
+
+    @Column(name = "street")
     private String streetLine;
 
     public String getCity() {
