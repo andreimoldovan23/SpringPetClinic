@@ -11,4 +11,9 @@ public class ControllerIndex {
         return "index";
     }
 
+    @RequestMapping({"/error", "/oups"})
+    public String errorHandler() {
+        return "error/index";
+    }
+
 }
