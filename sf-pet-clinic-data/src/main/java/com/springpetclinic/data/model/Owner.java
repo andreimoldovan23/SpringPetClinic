@@ -1,9 +1,16 @@
 package com.springpetclinic.data.model;
 
+import lombok.*;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import java.util.HashSet;
 import java.util.Set;
+
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@ToString(callSuper = true, exclude = {"pets", "address"})
+@EqualsAndHashCode(callSuper = true, exclude = {"pets", "address"})
 
 @Entity
 @Table(name = "Owners")
@@ -13,41 +20,17 @@ public class Owner extends Person {
     private Set<Pet> pets = new HashSet<>();
 
     @Column(name = "phone_number")
-    private String phoneNumber;
+    private String phoneNumber = null;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
-    private Address address;
+    private Address address = null;
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
+    @Builder
+    private Owner(String firstName, String lastName, String phoneNumber, Address address) {
+        super(firstName, lastName);
         this.phoneNumber = phoneNumber;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
         this.address = address;
-    }
-
-    public Set<Pet> getPets() {
-        return pets;
-    }
-
-    public void setPets(Set<Pet> pets) {
-        this.pets = pets;
-    }
-
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        pets.forEach(pet -> stringBuilder.append(pet.toString()).append(" "));
-        return "Owner: " + getId() + ", " + getFirstName() + " " + getLastName() + ", " +
-                phoneNumber + "\n" + address + "\nPets: " + stringBuilder.toString() + "\n";
     }
 
 }

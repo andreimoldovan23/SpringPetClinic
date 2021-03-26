@@ -10,6 +10,7 @@ import com.springpetclinic.data.services.VetService;
 import com.springpetclinic.data.services.VetSpecialtyService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+
 import java.util.Set;
 
 @Service
@@ -34,8 +35,7 @@ public class VetMapService extends AbstractMapService<Vet, Long> implements VetS
         for(var spec: specialties) {
             if(spec == null)
                 throw new NullSpecialty();
-            if(spec.getId() == null)
-                vetSpecialtyService.save(spec);
+            vetSpecialtyService.save(spec);
         }
 
         if(vet.getId() == null) {
