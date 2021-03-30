@@ -51,7 +51,6 @@ public class ControllerPets {
     @GetMapping("/pets/new")
     public String initCreationForm(Owner owner, Model model) {
         Pet pet = new Pet();
-        owner.getPets().add(pet);
         pet.setOwner(owner);
         model.addAttribute("pet", pet);
         return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
@@ -67,7 +66,9 @@ public class ControllerPets {
 
     @GetMapping("/pets/{petId}/edit")
     public String initUpdateForm(@PathVariable Long petId, Model model) {
-        model.addAttribute("pet", petService.findById(petId));
+        Pet pet = petService.findById(petId);
+        if(pet == null) return "redirect:/error";
+        model.addAttribute("pet", pet);
         return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
     }
 
@@ -78,8 +79,6 @@ public class ControllerPets {
 
     private String redirectErrorOrAddPet(Pet pet, BindingResult result, Owner owner, Model model) {
         if (result.hasErrors()) {
-            pet.setOwner(owner);
-            model.addAttribute("pet", pet);
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
         } else {
             try {

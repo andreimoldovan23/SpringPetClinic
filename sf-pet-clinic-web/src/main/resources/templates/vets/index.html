@@ -13,6 +13,7 @@
             <th style="width: 150px">ID</th>
             <th style="width: 150px">First Name</th>
             <th style="width: 150px">Last Name</th>
+            <th style="width: 150px">Specialties</th>
         </tr>
         </thead>
         <tbody>
@@ -20,6 +21,13 @@
             <td th:text="${v.id}"></td>
             <td th:text="${v.firstName}"></td>
             <td th:text="${v.lastName}"></td>
+            <td>
+                <table>
+                    <tr th:each="spec: ${v.specialties}">
+                        <td th:text="${spec.specialtyName}"></td>
+                    </tr>
+                </table>
+            </td>
         </tr>
         </tbody>
     </table>
