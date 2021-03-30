@@ -27,8 +27,8 @@ public class VetServiceTest {
 
     @BeforeEach
     public void setUp() {
-        vetSpecialty1 = VetSpecialty.builder().specialtyName("surgery").build();
-        vetSpecialty2 = VetSpecialty.builder().specialtyName("radiology").build();
+        vetSpecialty1 = VetSpecialty.builder().id(1L).specialtyName("surgery").build();
+        vetSpecialty2 = VetSpecialty.builder().id(2L).specialtyName("radiology").build();
 
         vet1 = Vet.builder().firstName("Jack").lastName("Michael").build();
         vet2 = Vet.builder().firstName("George").lastName("Tyson").build();
@@ -51,7 +51,6 @@ public class VetServiceTest {
     @Test
     public void test() throws MyException {
         assertThrows(NullVet.class, () -> vetService.save(null));
-        assertThrows(VetWithoutSpecialties.class, () -> vetService.save(vet1));
         vet1.getSpecialties().add(null);
         assertThrows(NullSpecialty.class, () -> vetService.save(vet1));
 
@@ -61,9 +60,6 @@ public class VetServiceTest {
 
         vet1 = vetService.save(vet1);
         vet2 = vetService.save(vet2);
-
-        vetSpecialty1.setId(1L);
-        vetSpecialty2.setId(2L);
 
         assertTrue(vetSpecialtyService.findAll().contains(vetSpecialty1));
         assertTrue(vetSpecialtyService.findAll().contains(vetSpecialty2));

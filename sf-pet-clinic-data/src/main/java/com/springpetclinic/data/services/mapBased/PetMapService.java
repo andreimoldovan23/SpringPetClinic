@@ -1,14 +1,9 @@
 package com.springpetclinic.data.services.mapBased;
 
-import com.springpetclinic.data.exceptions.MyException;
-import com.springpetclinic.data.exceptions.NullPet;
-import com.springpetclinic.data.exceptions.PetWithoutName;
-import com.springpetclinic.data.exceptions.PetWithoutType;
+import com.springpetclinic.data.exceptions.*;
 import com.springpetclinic.data.model.Pet;
-import com.springpetclinic.data.model.PetType;
 import com.springpetclinic.data.model.Visit;
 import com.springpetclinic.data.services.PetService;
-import com.springpetclinic.data.services.PetTypeService;
 import com.springpetclinic.data.services.VisitService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -22,11 +17,9 @@ import java.util.stream.Collectors;
 @Profile({"default", "map"})
 public class PetMapService extends AbstractMapService<Pet, Long> implements PetService {
 
-    private final PetTypeService petTypeService;
     private final VisitService visitService;
 
-    public PetMapService(PetTypeService petTypeService, VisitService visitService) {
-        this.petTypeService = petTypeService;
+    public PetMapService(VisitService visitService) {
         this.visitService = visitService;
     }
 
@@ -38,10 +31,10 @@ public class PetMapService extends AbstractMapService<Pet, Long> implements PetS
         if(pet.getName() == null)
             throw new PetWithoutName();
 
-        PetType petType = pet.getType();
-        if(petType == null)
+        if(pet.getType() == null)
             throw new PetWithoutType();
-        petTypeService.save(petType);
+        if(pet.getType().getId() == null)
+            throw new NonExistentType();
 
         if(pet.getId() == null) {
             Long id = super.id.incrementAndGet();
@@ -67,14 +60,14 @@ public class PetMapService extends AbstractMapService<Pet, Long> implements PetS
     }
 
     @Override
-    public void delete(Pet type) {
-        deleteCascade(type);
-        super.delete(type);
+    public void delete(Pet pet) {
+        deleteCascade(pet);
+        super.delete(pet);
     }
 
     @Override
-    public void deleteById(Long aLong) {
-        deleteCascade(findById(aLong));
-        super.deleteById(aLong);
+    public void deleteById(Long id) {
+        deleteCascade(findById(id));
+        super.deleteById(id);
     }
 }

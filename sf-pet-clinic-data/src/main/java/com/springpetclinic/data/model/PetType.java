@@ -8,9 +8,6 @@ import javax.persistence.Entity;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-@AllArgsConstructor(access = AccessLevel.PUBLIC)
-@Builder
-@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 
 @Entity
@@ -18,6 +15,16 @@ import javax.persistence.Entity;
 public class PetType extends BaseEntity {
 
     @Column(name = "name")
-    private String name = null;
+    private String name;
+
+    @Builder
+    private PetType(Long id, String name) {
+        super(id);
+        this.name = name;
+    }
+
+    public String toString() {
+        return name;
+    }
 
 }

@@ -1,10 +1,8 @@
 package com.springpetclinic.data.services.mapBased;
 
 import com.springpetclinic.data.exceptions.*;
-import com.springpetclinic.data.model.Address;
 import com.springpetclinic.data.model.Owner;
 import com.springpetclinic.data.model.Pet;
-import com.springpetclinic.data.services.AddressService;
 import com.springpetclinic.data.services.OwnerService;
 import com.springpetclinic.data.services.PetService;
 import org.springframework.context.annotation.Profile;
@@ -20,11 +18,9 @@ import java.util.stream.Collectors;
 public class OwnerMapService extends AbstractMapService<Owner, Long> implements OwnerService {
 
     private final PetService petService;
-    private final AddressService addressService;
 
-    public OwnerMapService(PetService petService, AddressService addressService) {
+    public OwnerMapService(PetService petService) {
         this.petService = petService;
-        this.addressService = addressService;
     }
 
     @Override
@@ -32,13 +28,6 @@ public class OwnerMapService extends AbstractMapService<Owner, Long> implements 
     public Owner save(Owner owner) throws MyException {
         if(owner == null)
             throw new NullOwner();
-        if(owner.getPets().size() == 0)
-            throw new OwnerWithoutPets();
-
-        Address address = owner.getAddress();
-        if(address == null)
-            throw new OwnerWithoutAddress();
-        owner.setAddress(addressService.save(address));
 
         if(owner.getId() == null) {
             Long id = super.id.incrementAndGet();
@@ -59,31 +48,31 @@ public class OwnerMapService extends AbstractMapService<Owner, Long> implements 
         return owner;
     }
 
-    private void deleteCascade(Owner type) {
+    private void deleteCascade(Owner owner) {
         List<Pet> pets = petService.findAll().stream()
-                .filter(pet -> type.getPets().contains(pet))
+                .filter(pet -> owner.getPets().contains(pet))
                 .collect(Collectors.toList());
         pets.forEach(petService::delete);
     }
 
     @Override
-    public void delete(Owner type) {
-        deleteCascade(type);
-        super.delete(type);
+    public void delete(Owner owner) {
+        deleteCascade(owner);
+        super.delete(owner);
     }
 
     @Override
-    public void deleteById(Long aLong) {
-        Owner type = findById(aLong);
+    public void deleteById(Long id) {
+        Owner type = findById(id);
         deleteCascade(type);
-        super.deleteById(aLong);
+        super.deleteById(id);
     }
 
-    public Owner findByLastName(String lastName) {
+    @Override
+    public List<Owner> findAllByLastNameLike(String lastName) {
         return super.map.values().stream()
-                .filter(owner -> owner.getLastName().equalsIgnoreCase(lastName))
-                .findFirst()
-                .orElse(null);
+                .filter(owner -> owner.getLastName().contains(lastName))
+                .collect(Collectors.toList());
     }
 
 }

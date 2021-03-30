@@ -7,6 +7,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 @EqualsAndHashCode
 
@@ -17,5 +18,9 @@ public abstract class BaseEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    public boolean isNew() {
+        return this.id == null;
+    }
 
 }

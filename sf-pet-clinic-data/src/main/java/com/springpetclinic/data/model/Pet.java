@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-@AllArgsConstructor(access = AccessLevel.PUBLIC)
 @ToString(callSuper = true, exclude = {"visits", "owner", "type"})
 @EqualsAndHashCode(callSuper = true, exclude = {"visits", "owner", "type"})
 
@@ -18,25 +17,26 @@ import javax.persistence.Entity;
 @Table(name = "Pets")
 public class Pet extends BaseEntity {
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "type_id")
-    private PetType type = null;
+    private PetType type;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
-    private Owner owner = null;
+    private Owner owner;
 
     @Column(name = "birth_date")
-    private LocalDate birthDate = null;
+    private LocalDate birthDate;
 
     @Column(name = "name")
-    private String name = null;
+    private String name;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "pet")
     private Set<Visit> visits = new HashSet<>();
 
     @Builder
-    public Pet(PetType type, Owner owner, LocalDate birthDate, String name) {
+    private Pet(Long id, PetType type, Owner owner, LocalDate birthDate, String name) {
+        super(id);
         this.type = type;
         this.owner = owner;
         this.birthDate = birthDate;

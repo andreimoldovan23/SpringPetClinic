@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -37,7 +38,7 @@ public class OwnerServiceTest {
 
     @BeforeEach
     void setUp() {
-        returnOwner = Owner.builder().lastName(LAST_NAME).build();
+        returnOwner = Owner.builder().id(2L).lastName(LAST_NAME).build();
     }
 
     @AfterEach
@@ -47,21 +48,18 @@ public class OwnerServiceTest {
 
     @Test
     public void findByLastName() {
-        ArgumentMatcher<String> lastName = s -> s.endsWith(LAST_NAME);
-        when(ownerRepository.findByLastName(argThat(lastName))).thenReturn(returnOwner);
-        Owner smith = service.findByLastName(LAST_NAME);
-        Owner another = service.findByLastName("Jackson");
-        assertEquals(LAST_NAME, smith.getLastName());
-        assertNull(another);
-        verify(ownerRepository).findByLastName(LAST_NAME);
+        ArgumentMatcher<String> lastName = s -> s.contains(LAST_NAME);
+        when(ownerRepository.findAllByLastNameLike(argThat(lastName))).thenReturn(List.of(returnOwner, Owner.builder().build()));
+        List<Owner> owners = service.findAllByLastNameLike(LAST_NAME);
+        assertEquals(2, owners.size());
+        assertTrue(owners.contains(returnOwner));
+        verify(ownerRepository).findAllByLastNameLike(anyString());
     }
 
     @Test
     public void findAll() {
         Set<Owner> returnOwnersSet = new HashSet<>();
-        returnOwner.setId(2L);
-        Owner newOwner = Owner.builder().firstName(LAST_NAME).build();
-        newOwner.setId(3L);
+        Owner newOwner = Owner.builder().id(3L).firstName(LAST_NAME).build();
         returnOwnersSet.add(returnOwner);
         returnOwnersSet.add(newOwner);
         when(ownerRepository.findAll()).thenReturn(returnOwnersSet);
@@ -75,14 +73,14 @@ public class OwnerServiceTest {
     @Test
     public void findById() {
         when(ownerRepository.findById(anyLong())).thenReturn(Optional.of(returnOwner));
-        Owner owner = service.findById(1L);
+        Owner owner = service.findById(2L);
         assertNotNull(owner);
     }
 
     @Test
     public void findByIdNotFound() {
         when(ownerRepository.findById(anyLong())).thenReturn(Optional.empty());
-        Owner owner = service.findById(1L);
+        Owner owner = service.findById(2L);
         assertNull(owner);
     }
 
@@ -104,7 +102,7 @@ public class OwnerServiceTest {
 
     @Test
     public void deleteById() {
-        service.deleteById(1L);
+        service.deleteById(2L);
         verify(ownerRepository).deleteById(anyLong());
     }
 }

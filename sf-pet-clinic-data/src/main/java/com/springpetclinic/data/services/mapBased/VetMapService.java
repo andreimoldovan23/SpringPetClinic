@@ -3,7 +3,6 @@ package com.springpetclinic.data.services.mapBased;
 import com.springpetclinic.data.exceptions.MyException;
 import com.springpetclinic.data.exceptions.NullSpecialty;
 import com.springpetclinic.data.exceptions.NullVet;
-import com.springpetclinic.data.exceptions.VetWithoutSpecialties;
 import com.springpetclinic.data.model.Vet;
 import com.springpetclinic.data.model.VetSpecialty;
 import com.springpetclinic.data.services.VetService;
@@ -29,9 +28,6 @@ public class VetMapService extends AbstractMapService<Vet, Long> implements VetS
             throw new NullVet();
 
         Set<VetSpecialty> specialties = vet.getSpecialties();
-        if(specialties.size() == 0)
-            throw new VetWithoutSpecialties();
-
         for(var spec: specialties) {
             if(spec == null)
                 throw new NullSpecialty();

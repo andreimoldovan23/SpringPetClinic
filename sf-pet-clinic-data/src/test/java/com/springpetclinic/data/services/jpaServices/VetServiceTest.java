@@ -37,7 +37,7 @@ public class VetServiceTest {
 
     @BeforeEach
     public void setUp() {
-        vet = Vet.builder().firstName("Jack").lastName("Johnson").build();
+        vet = Vet.builder().id(1L).firstName("Jack").lastName("Johnson").build();
     }
 
     @AfterEach
@@ -64,11 +64,7 @@ public class VetServiceTest {
 
     @Test
     public void save() throws MyException {
-        when(vetRepo.save(vet)).thenAnswer(adr -> {
-            vet.setId(1L);
-            return vet;
-        });
-
+        when(vetRepo.save(vet)).thenReturn(vet);
         assertEquals(1L, vetJPAService.save(vet).getId());
         verify(vetRepo).save(any());
     }

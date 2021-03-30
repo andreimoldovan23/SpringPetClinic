@@ -8,8 +8,6 @@ import javax.persistence.Entity;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-@AllArgsConstructor(access = AccessLevel.PUBLIC)
-@Builder
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 
@@ -18,6 +16,12 @@ import javax.persistence.Entity;
 public class VetSpecialty extends BaseEntity {
 
     @Column(name = "name")
-    private String specialtyName = null;
+    private String specialtyName;
+
+    @Builder
+    private VetSpecialty(Long id, String specialtyName) {
+        super(id);
+        this.specialtyName = specialtyName;
+    }
 
 }

@@ -7,8 +7,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-@AllArgsConstructor(access = AccessLevel.PUBLIC)
-@Builder
 @ToString(callSuper = true, exclude = {"pet"})
 @EqualsAndHashCode(callSuper = true, exclude = {"pet"})
 
@@ -17,14 +15,22 @@ import java.time.LocalDateTime;
 public class Visit extends BaseEntity {
 
     @Column(name = "time")
-    private LocalDateTime localDateTime = null;
+    private LocalDateTime date;
 
     @Lob
     @Column(name = "description")
-    private String description = null;
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "pet_id")
-    private Pet pet = null;
+    private Pet pet;
+
+    @Builder
+    private Visit(Long id, String description, LocalDateTime date, Pet pet) {
+        super(id);
+        this.description = description;
+        this.date = date;
+        this.pet = pet;
+    }
 
 }

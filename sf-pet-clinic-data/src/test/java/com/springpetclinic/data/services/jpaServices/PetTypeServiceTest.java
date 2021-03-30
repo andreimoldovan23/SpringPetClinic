@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.text.ParseException;
 import java.util.Optional;
 import java.util.Set;
 
@@ -33,7 +34,7 @@ public class PetTypeServiceTest {
 
     @BeforeEach
     public void setUp() {
-        petType = PetType.builder().name("Dog").build();
+        petType = PetType.builder().id(1L).name("Dog").build();
     }
 
     @AfterEach
@@ -60,11 +61,7 @@ public class PetTypeServiceTest {
 
     @Test
     public void save() throws MyException {
-        when(petTypeRepo.save(petType)).thenAnswer(adr -> {
-            petType.setId(1L);
-            return petType;
-        });
-
+        when(petTypeRepo.save(petType)).thenReturn(petType);
         assertEquals(1L, petTypeJpaService.save(petType).getId());
         verify(petTypeRepo).save(any());
     }
@@ -80,4 +77,16 @@ public class PetTypeServiceTest {
         petTypeJpaService.deleteById(1L);
         verify(petTypeRepo).deleteById(any());
     }
+
+    @Test
+    public void findByName() {
+        when(petTypeRepo.findByName(anyString())).thenAnswer(invocationOnMock -> {
+            String name = invocationOnMock.getArgument(0);
+            return name.length() <= 5 ? petType : null;
+        });
+
+        assertEquals(petType, petTypeJpaService.findByName("dog"));
+        assertNull(petTypeJpaService.findByName("aaaaaaaaaaaa"));
+    }
+
 }

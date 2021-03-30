@@ -9,4 +9,12 @@ import org.springframework.stereotype.Service;
 @Profile({"default", "map"})
 public class PetTypeMapService extends AbstractMapService<PetType, Long> implements PetTypeService {
 
+    @Override
+    public PetType findByName(String lastName) {
+        return map.values().stream()
+                .filter(petType -> petType.getName().equalsIgnoreCase(lastName))
+                .findFirst()
+                .orElse(null);
+    }
+
 }

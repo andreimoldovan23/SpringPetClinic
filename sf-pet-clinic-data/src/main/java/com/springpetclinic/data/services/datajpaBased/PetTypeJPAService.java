@@ -14,4 +14,8 @@ public class PetTypeJPAService extends AbstractJPAService<PetType, Long> impleme
         super(petTypeRepo);
     }
 
+    public PetType findByName(String s) {
+        return ((PetTypeRepo)repository).findByName(s);
+    }
+
 }

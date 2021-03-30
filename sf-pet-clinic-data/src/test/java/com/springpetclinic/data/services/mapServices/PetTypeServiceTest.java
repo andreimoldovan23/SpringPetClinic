@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PetTypeServiceTest {
 
     private PetType petType1, petType2;
-    private AbstractMapService<PetType, Long> petTypeService;
+    private PetTypeMapService petTypeService;
 
     @BeforeEach
     public void setUp() {
@@ -39,6 +39,9 @@ public class PetTypeServiceTest {
     public void test() throws MyException {
         petType1 = petTypeService.save(petType1);
         petType2 = petTypeService.save(petType2);
+
+        assertEquals(petType1, petTypeService.findByName("Dog"));
+        assertNull(petTypeService.findByName("eagle"));
 
         assertEquals(2, petTypeService.findAll().size());
         assertEquals(petType1, petTypeService.findById(1L));

@@ -38,7 +38,7 @@ public class PetServiceTest {
 
     @BeforeEach
     public void setUp() {
-        pet = Pet.builder().name("Gaston").birthDate(LocalDate.now()).build();
+        pet = Pet.builder().id(1L).name("Gaston").birthDate(LocalDate.now()).build();
     }
 
     @AfterEach
@@ -65,11 +65,7 @@ public class PetServiceTest {
 
     @Test
     public void save() throws MyException {
-        when(petRepo.save(pet)).thenAnswer(adr -> {
-            pet.setId(1L);
-            return pet;
-        });
-
+        when(petRepo.save(pet)).thenReturn(pet);
         assertEquals(1L, petJPAService.save(pet).getId());
         verify(petRepo).save(any());
     }

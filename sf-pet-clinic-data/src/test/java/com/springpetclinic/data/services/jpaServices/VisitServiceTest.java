@@ -37,7 +37,7 @@ public class VisitServiceTest {
 
     @BeforeEach
     public void setUp() {
-        visit = Visit.builder().description("Problem").build();
+        visit = Visit.builder().id(1L).description("Problem").build();
     }
 
     @AfterEach
@@ -64,11 +64,7 @@ public class VisitServiceTest {
 
     @Test
     public void save() throws MyException {
-        when(visitRepo.save(visit)).thenAnswer(adr -> {
-            visit.setId(1L);
-            return visit;
-        });
-
+        when(visitRepo.save(visit)).thenReturn(visit);
         assertEquals(1L, visitJPAService.save(visit).getId());
         verify(visitRepo).save(any());
     }

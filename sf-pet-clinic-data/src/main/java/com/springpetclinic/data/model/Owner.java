@@ -9,8 +9,8 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-@ToString(callSuper = true, exclude = {"pets", "address"})
-@EqualsAndHashCode(callSuper = true, exclude = {"pets", "address"})
+@ToString(callSuper = true, exclude = {"pets"})
+@EqualsAndHashCode(callSuper = true, exclude = {"pets"})
 
 @Entity
 @Table(name = "Owners")
@@ -20,17 +20,29 @@ public class Owner extends Person {
     private Set<Pet> pets = new HashSet<>();
 
     @Column(name = "phone_number")
-    private String phoneNumber = null;
+    private String phoneNumber;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id")
-    private Address address = null;
+    private String city;
+    private String streetLine;
 
     @Builder
-    private Owner(String firstName, String lastName, String phoneNumber, Address address) {
+    private Owner(Long id, String firstName, String lastName, String phoneNumber, String city, String streetLine) {
         super(firstName, lastName);
         this.phoneNumber = phoneNumber;
-        this.address = address;
+        this.city = city;
+        this.streetLine = streetLine;
+        setId(id);
+    }
+
+    public Pet getPet(String name, boolean ignoreNew) {
+        for (Pet pet : pets) {
+            if (!ignoreNew || !pet.isNew()) {
+                if (pet.getName().equalsIgnoreCase(name)) {
+                    return pet;
+                }
+            }
+        }
+        return null;
     }
 
 }

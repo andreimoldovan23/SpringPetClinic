@@ -24,11 +24,11 @@ public class VisitServiceTest {
     public void setUp() {
         visit1 = Visit.builder()
                 .description("Problem")
-                .localDateTime(LocalDateTime.now())
+                .date(LocalDateTime.now())
                 .build();
         visit2 = Visit.builder()
                 .description("Problem")
-                .localDateTime(LocalDateTime.now())
+                .date(LocalDateTime.now())
                 .build();
         visit1.setPet(Pet.builder().build());
         visit2.setPet(Pet.builder().build());

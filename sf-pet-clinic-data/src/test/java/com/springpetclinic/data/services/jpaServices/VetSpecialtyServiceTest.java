@@ -33,7 +33,7 @@ public class VetSpecialtyServiceTest {
 
     @BeforeEach
     public void setUp() {
-        vetSpecialty = VetSpecialty.builder().specialtyName("surgery").build();
+        vetSpecialty = VetSpecialty.builder().id(1L).specialtyName("surgery").build();
     }
 
     @AfterEach
@@ -60,11 +60,7 @@ public class VetSpecialtyServiceTest {
 
     @Test
     public void save() throws MyException {
-        when(vetRepo.save(vetSpecialty)).thenAnswer(adr -> {
-            vetSpecialty.setId(1L);
-            return vetSpecialty;
-        });
-
+        when(vetRepo.save(vetSpecialty)).thenReturn(vetSpecialty);
         assertEquals(1L, vetJPAService.save(vetSpecialty).getId());
         verify(vetRepo).save(any());
     }

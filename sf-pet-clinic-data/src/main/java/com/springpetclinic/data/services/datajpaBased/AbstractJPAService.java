@@ -1,9 +1,9 @@
 package com.springpetclinic.data.services.datajpaBased;
 
-import com.springpetclinic.data.exceptions.MyException;
 import com.springpetclinic.data.model.BaseEntity;
 import com.springpetclinic.data.services.CrudService;
 import org.springframework.data.repository.CrudRepository;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +16,7 @@ public abstract class AbstractJPAService<T extends BaseEntity, ID extends Long> 
     }
 
     @Override
-    public T save(T type) throws MyException {
+    public T save(T type) {
         return repository.save(type);
     }
 
