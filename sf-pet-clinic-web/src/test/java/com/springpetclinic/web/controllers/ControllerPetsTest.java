@@ -104,7 +104,7 @@ public class ControllerPetsTest {
         when(petService.save(any())).thenThrow(NonExistentType.class);
         mockMvc.perform(post("/owners/1/pets/new"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/error"));
+                .andExpect(view().name("redirect:/oups"));
     }
 
 }

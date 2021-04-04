@@ -130,7 +130,7 @@ public class ControllerOwnersTest {
         when(ownerService.findById(anyLong())).thenReturn(null);
         mockMvc.perform(get("/owners/1/edit"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/error"));
+                .andExpect(view().name("redirect:/oups"));
     }
 
     @Test

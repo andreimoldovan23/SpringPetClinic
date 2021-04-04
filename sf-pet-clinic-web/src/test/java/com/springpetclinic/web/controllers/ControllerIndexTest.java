@@ -39,7 +39,7 @@ public class ControllerIndexTest {
 
     @Test
     public void errorTest() throws Exception {
-        mockMvc.perform(get("/error"))
+        mockMvc.perform(get("/oups"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("error/index"));
     }

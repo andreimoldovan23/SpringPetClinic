@@ -15,6 +15,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.beans.PropertyEditorSupport;
+import java.time.LocalDate;
 import java.util.Collection;
 
 @Controller
@@ -48,6 +50,16 @@ public class ControllerPets {
         dataBinder.setDisallowedFields("id");
     }
 
+    @InitBinder
+    public void dataBinder(WebDataBinder dataBinder) {
+        dataBinder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException{
+                setValue(LocalDate.parse(text));
+            }
+        });
+    }
+
     @GetMapping("/pets/new")
     public String initCreationForm(Owner owner, Model model) {
         Pet pet = new Pet();
@@ -67,7 +79,7 @@ public class ControllerPets {
     @GetMapping("/pets/{petId}/edit")
     public String initUpdateForm(@PathVariable Long petId, Model model) {
         Pet pet = petService.findById(petId);
-        if(pet == null) return "redirect:/error";
+        if(pet == null) return "redirect:/oups";
         model.addAttribute("pet", pet);
         return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
     }
@@ -79,13 +91,15 @@ public class ControllerPets {
 
     private String redirectErrorOrAddPet(Pet pet, BindingResult result, Owner owner, Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("pet", pet);
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
         } else {
             try {
-                pet = petService.save(pet);
                 owner.getPets().add(pet);
+                pet.setOwner(owner);
+                petService.save(pet);
             } catch (MyException e) {
-                return "redirect:/error";
+                return "redirect:/oups";
             }
             return "redirect:/owners/" + owner.getId();
         }

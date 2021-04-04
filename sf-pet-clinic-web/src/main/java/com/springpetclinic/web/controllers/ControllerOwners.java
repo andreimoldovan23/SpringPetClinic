@@ -84,7 +84,7 @@ public class ControllerOwners {
         try {
             savedOwner = ownerService.save(owner);
         } catch (MyException e) {
-            return "redirect:/error";
+            return "redirect:/oups";
         }
         return "redirect:/owners/" + savedOwner.getId();
     }
@@ -93,7 +93,7 @@ public class ControllerOwners {
     public String initUpdate(@PathVariable String id, Model model) {
         Owner owner = ownerService.findById(Long.valueOf(id));
         if(owner == null) {
-            return "redirect:/error";
+            return "redirect:/oups";
         }
         model.addAttribute("owner", owner);
         return "owners/createOrUpdateForm";
@@ -109,7 +109,7 @@ public class ControllerOwners {
         try {
             ownerService.save(owner);
         } catch (MyException e) {
-            return "redirect:/error";
+            return "redirect:/oups";
         }
         return "redirect:/owners/" + owner.getId();
     }
